@@ -12,12 +12,14 @@ interface StudentIdProps {
   studentId: string;
   closeModal: () => void;
   isEdit: boolean;
+  toggleUpdate: () => void;
 }
 
 export function StudentDetails({
   studentId,
   closeModal,
   isEdit,
+  toggleUpdate,
 }: StudentIdProps) {
   const { toast } = useToast();
   const [student, setStudent] = useState({
@@ -87,6 +89,8 @@ export function StudentDetails({
         }
       );
       toast({ description: response.data.message });
+      toggleUpdate();
+      closeModal();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast({ description: error.message });
@@ -144,7 +148,9 @@ export function StudentDetails({
             onChange={handleInputChange}
           />
         </div>
-        <Button type="submit">Save Changes</Button>
+        <Button disabled={!isEdit} type="submit">
+          Save Changes
+        </Button>
       </form>
     </div>
   );

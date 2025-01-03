@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Delete, Edit, EyeIcon } from "lucide-react";
 import { axiosInstance } from "@/api/axiosInstance";
 import axios from "axios";
@@ -24,7 +23,6 @@ export function StudentsList() {
     isActive: boolean;
     enrollmentDate: string;
   };
-  const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [studentId, setStudentId] = useState("");
@@ -79,6 +77,10 @@ export function StudentsList() {
     }
   }
 
+  const toggleUpdate = () => {
+    setUpdated(!updated);
+  };
+
   const removeUser = async (stdId: string) => {
     interface ResponseModel {
       success: boolean;
@@ -88,7 +90,7 @@ export function StudentsList() {
       const response = await axiosInstance.delete<ResponseModel>(
         `/admin/students/${stdId}`
       );
-      setUpdated(!updated);
+      toggleUpdate();
       toast({ description: response.data.message });
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -111,15 +113,6 @@ export function StudentsList() {
     <>
       <div>
         <h1 className="text-3xl font-bold mb-6">Students List</h1>
-        <div className="mb-4">
-          <Input
-            type="text"
-            placeholder="Search students..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -150,6 +143,7 @@ export function StudentsList() {
                     className="cursor-pointer"
                     onClick={() => {
                       setStudentId(student._id);
+                      setEdit(false);
                       setModalOpen(true);
                     }}
                   />
@@ -180,6 +174,7 @@ export function StudentsList() {
             studentId={studentId}
             closeModal={closeModal}
             isEdit={edit}
+            toggleUpdate={toggleUpdate}
           />
         </div>
       )}

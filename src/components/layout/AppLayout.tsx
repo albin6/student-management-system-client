@@ -5,7 +5,6 @@ import SignupPage from "@/pages/SignupPage";
 import { RequireAuth, RequireNoAuth } from "@/protected/RequireAuth";
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { StudentsList } from "@/pages/admin/StudentList";
-import { StudentDetails } from "@/pages/admin/StudentDetails";
 import { AddStudent } from "@/pages/admin/AddStudent";
 import { AdminLayout } from "./AdminLayout";
 import { RequireAdmin } from "@/protected/RequireAdminAuth";
@@ -50,7 +49,6 @@ function AppLayout() {
         >
           <Route index element={<AdminDashboard />} />
           <Route path="students" element={<StudentsList />} />
-          <Route path="students/:id" element={<StudentDetails />} />
           <Route path="students/new" element={<AddStudent />} />
         </Route>
       </Routes>
